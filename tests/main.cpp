@@ -61,7 +61,9 @@ void serveAutobahn() {
     }
 
     std::thread t([]() {
-        system("wstest -m fuzzingclient -s misc/Autobahn.json");
+        if (!system("wstest -m fuzzingclient -s misc/Autobahn.json")) {
+
+        }
     });
 
     h.run();
@@ -645,8 +647,8 @@ void testHTTP() {
 
         if (!remainingBytes) {
             // control the contents
-            for (int i = 0; i < buffer->length(); i++) {
-                if ((*buffer)[i] != '0' + i % 10) {
+            for (unsigned int i = 0; i < buffer->length(); i++) {
+                if ((*buffer)[i] != char('0' + i % 10)) {
                     std::cout << "FAILURE: corrupt data received in HTTP post!" << std::endl;
                     exit(-1);
                 }
